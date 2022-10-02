@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1 {
+        background-color: royalblue;
+      }
+      #logo {
+
+      }   
+      #logo img {
+        width: 360px;
+        height: 220px;
+        border: 1px solid lightgrey;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th {
+        padding: 1px 10px;
+      }
+      td,
+      th {
+        border-bottom: 1px solid black;
+        text-align: center;
+      }
+      .container {
+        display: flex;
+      }
+      body {
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="logo">
+        <img
+          src="{{ url_for('static', filename='/img/stori-logo.jpeg') }}"
+          alt=""
+        />
+    </div>
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Transactions</th>
+            <th>Avg Debit</th>
+            <th>Avg Credit</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for month in context.month_states.values() %}
+          <tr>
+            <td>{{ month.name }}</td>
+            <td>{{ month.transactions_count }}</td>
+            <td>${{ month.debit_average }}</td>
+            <td>${{ month.credit_average }}</td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="2"></td>
+            <td><strong>{{ context.debit_total_balance }}</strong></td>
+            <td><strong>{{ context.credit_total_balance }}</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Total balance</strong></td>
+            <td></td>
+            <td colspan="2"><strong>{{ context.total_balance }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>
