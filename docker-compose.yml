@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  flask:
+    build:
+      context: .
+      dockerfile: ./compose/flask/Dockerfile
+    container_name: flask
+    ports:
+      - "8000:5000"
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.flask
