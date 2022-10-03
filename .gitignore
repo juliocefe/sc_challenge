@@ -273,3 +273,7 @@ sahuarito/media/
 
 # backups
 backups/
+
+# Django stuff:
+staticfiles/
+*/static/CACHE/
