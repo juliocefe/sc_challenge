@@ -1,0 +1,7 @@
+MAIL_SERVER=mailhog
+MAIL_PORT=1025
+MAIL_USE_SSL=True
+MAIL_USERNAME=mailhog
+MAIL_PASSWORD=mailhog
+MAIL_DEFAULT_SENDER=test@mailhog.local
+RECIPIENTS=customer@mailserver.domain
