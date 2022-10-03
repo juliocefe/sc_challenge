@@ -55,7 +55,7 @@
           </tr>
         </thead>
         <tbody>
-          {% for month in context.month_states.values() %}
+          {% for month in context.month_stats.values() %}
           <tr>
             <td>{{ month.name }}</td>
             <td>{{ month.transactions_count }}</td>

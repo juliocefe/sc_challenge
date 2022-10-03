@@ -51,7 +51,7 @@ class TransactionsProcessor:
         self.total_balance = Decimal("0.00")
         self.debit_total_balance = Decimal("0.00")
         self.credit_total_balance = Decimal("0.00")
-        self.month_states = {}
+        self.month_stats = {}
         self.process_data()
 
     def process_transaction(self, raw_data: dict, month: MonthStats):
@@ -74,18 +74,18 @@ class TransactionsProcessor:
             for row in data:
                 month, year = row["date"].split("/")[1:]
                 mont_id = f"{month}-{year}"
-                if mont_id not in self.month_states:
-                    self.month_states[mont_id] = MonthStats(
+                if mont_id not in self.month_stats:
+                    self.month_stats[mont_id] = MonthStats(
                         name=MONTHS[int(month)],
                         month_number=int(month)
                     )
-                month_stats: MonthStats = self.month_states[mont_id]
+                month_stats: MonthStats = self.month_stats[mont_id]
                 self.process_transaction(row, month_stats)
 
     @property
     def data(self):
         return {
-            "month_states": self.month_states,
+            "month_stats": self.month_stats,
             "total_balance": self.total_balance,
             "debit_total_balance": self.debit_total_balance,
             "credit_total_balance": self.credit_total_balance
