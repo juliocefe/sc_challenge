@@ -277,3 +277,6 @@ backups/
 # Django stuff:
 staticfiles/
 */static/CACHE/
+
+# zip files
+*.zip
