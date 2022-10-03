@@ -14,7 +14,11 @@ mail = Mail(app)
 @app.route("/")
 def hello_world():
     context = process_transactions()
-    msg = Message("Holis", recipients=["customer@mailserver.domain"])
+    recipients = os.environ.get(
+        "RECIPIENTS", 
+        "customer@mailserver.domain"
+    ).split(",")
+    msg = Message("Holis", recipients=recipients)
     msg.html = render_template("email.html", context=context)
     mail.send(msg)
     return "Email has ben sent!"
