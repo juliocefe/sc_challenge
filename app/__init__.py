@@ -9,7 +9,7 @@ app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 1025))
 app.config["MAIL_USE_SSL"] = (os.environ.get("MAIL_USE_SSL", "False")) == "True"
 app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME", "mailhog")
 app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "mailhog")
-app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_PASSWORD", "test@mailhog.local")
+app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER", "test@mailhog.local")
 mail = Mail(app)
 
 @app.route("/")
