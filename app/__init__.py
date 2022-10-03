@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from app.transactions import process_transactions
+from app.transactions import TransactionsProcessor
 from flask_mail import Mail, Message
 import os
 
@@ -14,12 +14,12 @@ mail = Mail(app)
 
 @app.route("/")
 def hello_world():
-    context = process_transactions()
+    processor = TransactionsProcessor(file_name="transactions.csv")
     recipients = os.environ.get(
         "RECIPIENTS", 
         "customer@mailserver.domain"
     ).split(",")
     msg = Message("Holis", recipients=recipients)
-    msg.html = render_template("email.html", context=context)
+    msg.html = render_template("email.html", context=processor.data)
     mail.send(msg)
     return "Email has ben sent!"

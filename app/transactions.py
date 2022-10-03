@@ -4,8 +4,6 @@ from dataclasses import dataclass, field
 from decimal import Decimal
 
 
-CREDIT_CARD = "+"
-DEBIT_CARD = "-"
 MONTHS = {
     1: "Enero",
     2: "Febrero",
@@ -23,7 +21,7 @@ MONTHS = {
 
 
 @dataclass
-class MonthResume:
+class MonthStats:
 
     name: str
     month_number: int
@@ -42,44 +40,53 @@ class MonthResume:
     def transactions_count(self):
         return len(self.debit_transactions + self.credit_transactions)
 
-    def store_transaction(self, sign, amount, date):
-        transaction_ = {"amount": amount, "date": date}
-        if sign == CREDIT_CARD:
-            self.credit_transactions.append(transaction_)
-        elif sign == DEBIT_CARD:
-            self.debit_transactions.append(transaction_)
 
+class TransactionsProcessor:
 
-def process_transactions():
-    # improve this name
-    month_states = {}  # TODO type this
-    with open("transactions.csv") as f:
-        reader = csv.DictReader(f)
-        total_balance = Decimal("0.00")
-        debit_total_balance = Decimal("0.00")
-        credit_total_balance = Decimal("0.00")
-        for row in reader:
-            month, year = row["date"].split("/")[1:]
-            mont_year = f"{month}-{year}"
-            if mont_year not in month_states:
-                month_states[mont_year] = MonthResume(
-                    name=MONTHS[int(month)],
-                    month_number=int(month)
-                )
-            month_resume: MonthResume = month_states[mont_year]
-            amount = Decimal(row["transaction"][1:])
-            sign = row["transaction"][0]
-            transaction_ = {"amount": amount, "date": row["date"]}
-            if sign == CREDIT_CARD:
-                month_resume.credit_transactions.append(transaction_)
-                credit_total_balance += amount
-            elif sign == DEBIT_CARD:
-                month_resume.debit_transactions.append(transaction_)
-                debit_total_balance += amount
-            total_balance += amount
-    return {
-        "month_states": month_states,
-        "total_balance": total_balance,
-        "debit_total_balance": debit_total_balance,
-        "credit_total_balance": credit_total_balance
-    }
+    CREDIT_CARD = "+"
+    DEBIT_CARD = "-"
+
+    def __init__(self, file_name):
+        self.file_name = file_name
+        self.total_balance = Decimal("0.00")
+        self.debit_total_balance = Decimal("0.00")
+        self.credit_total_balance = Decimal("0.00")
+        self.month_states = {}
+        self.process_data()
+
+    def process_transaction(self, raw_data: dict, month: MonthStats):
+        sign = raw_data["transaction"][0]
+        transaction = {
+            "amount": Decimal(raw_data["transaction"][1:]), 
+            "date": raw_data["date"],
+        }
+        if sign == self.CREDIT_CARD:
+            month.credit_transactions.append(transaction)
+            self.credit_total_balance += transaction["amount"]
+        elif sign == self.DEBIT_CARD:
+            month.debit_transactions.append(transaction)
+            self.debit_total_balance += transaction["amount"]
+        self.total_balance += transaction["amount"]
+
+    def process_data(self):
+        with open(self.file_name) as f:
+            data = csv.DictReader(f)
+            for row in data:
+                month, year = row["date"].split("/")[1:]
+                mont_id = f"{month}-{year}"
+                if mont_id not in self.month_states:
+                    self.month_states[mont_id] = MonthStats(
+                        name=MONTHS[int(month)],
+                        month_number=int(month)
+                    )
+                month_stats: MonthStats = self.month_states[mont_id]
+                self.process_transaction(row, month_stats)
+
+    @property
+    def data(self):
+        return {
+            "month_states": self.month_states,
+            "total_balance": self.total_balance,
+            "debit_total_balance": self.debit_total_balance,
+            "credit_total_balance": self.credit_total_balance
+        }
