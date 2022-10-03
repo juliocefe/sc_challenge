@@ -1,18 +1,40 @@
 version: "3.9"
 
+volumes:
+  local_postgres_data: {}
+
 services:
+
+  django:
+    build:
+      context: ./stori
+      dockerfile: ./compose/local/Dockerfile
+    container_name: django_stori
+    depends_on:
+      - postgres
+    volumes:
+      - ./stori:/app:z
+    env_file:
+      - ./.envs/.local/.django
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
   flask:
     build:
-      context: .
-      dockerfile: ./compose/flask/Dockerfile
+      context: ./transactions_service
+      dockerfile: ./compose/local/Dockerfile
     container_name: flask
     ports:
-      - "8000:5000"
+      - "8001:5000"
     volumes:
-      - .:/app
+      - ./transactions_service:/app
     env_file:
-      - ./.envs/.flask
+      - ./.envs/.local/.flask
+      - ./.envs/.local/.postgres
     depends_on:
+      - django
       - mailhog
 
   mailhog:
@@ -22,3 +44,11 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+
+  postgres:
+    image: "postgres:12.3"
+    container_name: postgres
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data:Z
+    env_file:
+      - ./.envs/.local/.postgres
