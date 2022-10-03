@@ -22,7 +22,7 @@ RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
-COPY ./compose/flask/start /start
+COPY ./compose/local/start /start
 RUN sed -i 's/\r$//g' /start
 RUN chmod +x /start
 
