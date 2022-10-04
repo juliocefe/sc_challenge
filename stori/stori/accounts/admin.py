@@ -1,7 +1,12 @@
 from django.contrib import admin
-from .models import Account
+from .models import Account, Transactions
 
-# Register your models here.
+
 @admin.register(Account)
 class AccountAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(Transactions)
+class TransactionAdmin(admin.ModelAdmin):
+    pass
+
