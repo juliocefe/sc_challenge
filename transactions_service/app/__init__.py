@@ -4,7 +4,9 @@ from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
 from flask import request
+from datetime import datetime
 import os
+
 
 app = Flask(__name__)
 app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
@@ -22,6 +24,30 @@ db = SQLAlchemy(app)
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 Transaction = Base.classes.accounts_transactions
+Account = Base.classes.accounts_account
+
+
+def save_transaction(account_id, tsc: dict, oncredit=False):
+    transaction = Transaction(
+        account_id=account_id,
+        amount=tsc["amount"],
+        created_at=datetime.strptime(tsc["date"], '%d/%m/%Y'),
+        oncredit=oncredit
+    )
+    db.session.add(transaction)
+    db.session.commit()
+
+
+def save_transactions_to_db(processor: TransactionsProcessor):
+    """Bonus point 1"""
+    # get the first on for now
+    account = db.session.query(Account).first()
+    for month in processor.month_stats.values():
+        for tsc in month.debit_transactions:
+            save_transaction(account.id, tsc)
+        for tsc in month.credit_transactions:
+            save_transaction(account.id, tsc, True)
+
 
 @app.route("/", methods=["POST"])
 def process_transactions_file():
@@ -31,6 +57,7 @@ def process_transactions_file():
         location = os.path.join("", f.filename)
         f.save(location)
     processor = TransactionsProcessor(file_name=location)
+    save_transactions_to_db(processor)
     msg = Message("Holis", recipients=os.environ.get("RECIPIENTS").split(","))
     msg.html = render_template("email.html", context=processor.data)
     mail.send(msg)
