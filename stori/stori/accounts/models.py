@@ -12,4 +12,5 @@ class Transactions(models.Model):
         on_delete=models.CASCADE,
     )
     amount = models.DecimalField(max_digits=8,decimal_places=2)
+    oncredit = models.BooleanField(default=False)
     created_at = models.DateTimeField()
