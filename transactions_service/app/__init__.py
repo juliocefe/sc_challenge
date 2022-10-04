@@ -3,6 +3,7 @@ from app.transactions import TransactionsProcessor
 from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.automap import automap_base
+from flask import request
 import os
 
 app = Flask(__name__)
@@ -22,8 +23,14 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 Transaction = Base.classes.accounts_transactions
 
-def hello_world():
-    processor = TransactionsProcessor(file_name="transactions.csv")
+@app.route("/", methods=["POST"])
+def process_transactions_file():
+    location = ""
+    if request.method == 'POST':
+        f = request.files['transactions_file']
+        location = os.path.join("", f.filename)
+        f.save(location)
+    processor = TransactionsProcessor(file_name=location)
     msg = Message("Holis", recipients=os.environ.get("RECIPIENTS").split(","))
     msg.html = render_template("email.html", context=processor.data)
     mail.send(msg)

@@ -69,6 +69,7 @@ class TransactionsProcessor:
         self.total_balance += transaction["amount"]
 
     def process_data(self):
+        # TODO delete file after
         with open(self.file_name) as f:
             data = csv.DictReader(f)
             for row in data:
