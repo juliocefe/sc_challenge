@@ -41,7 +41,8 @@ def save_transaction(account_id, tsc: dict, oncredit=False):
 def save_transactions_to_db(processor: TransactionsProcessor):
     """Bonus point 1"""
     # get the first on for now
-    account = db.session.query(Account).first()
+    account_id: str = processor.file_name.removesuffix(".csv")
+    account = db.session.query(Account).filter_by(extra_id=account_id).first()
     for month in processor.month_stats.values():
         for tsc in month.debit_transactions:
             save_transaction(account.id, tsc)
