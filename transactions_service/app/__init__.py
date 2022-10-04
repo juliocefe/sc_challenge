@@ -23,11 +23,13 @@ db = SQLAlchemy(app)
 
 Base = automap_base()
 Base.prepare(db.engine, reflect=True)
-Transaction = Base.classes.accounts_transactions
-Account = Base.classes.accounts_account
+
+    
+    
 
 
 def save_transaction(account_id, tsc: dict, oncredit=False):
+    Transaction = Base.classes.accounts_transactions
     transaction = Transaction(
         account_id=account_id,
         amount=tsc["amount"],
@@ -40,7 +42,7 @@ def save_transaction(account_id, tsc: dict, oncredit=False):
 
 def save_transactions_to_db(processor: TransactionsProcessor):
     """Bonus point 1"""
-    # get the first on for now
+    Account = Base.classes.accounts_account
     account_id: str = processor.file_name.removesuffix(".csv")
     account = db.session.query(Account).filter_by(extra_id=account_id).first()
     for month in processor.month_stats.values():
