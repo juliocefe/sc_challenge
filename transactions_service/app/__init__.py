@@ -7,8 +7,8 @@ from flask import request
 from datetime import datetime
 import os
 
-
 app = Flask(__name__)
+
 app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER")
 app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT"))
 app.config["MAIL_USE_SSL"] = (os.environ.get("MAIL_USE_SSL", "False")) == "True"
@@ -22,9 +22,8 @@ mail = Mail(app)
 db = SQLAlchemy(app)
 
 Base = automap_base()
-Base.prepare(db.engine, reflect=True)
 
-    
+
 def save_transaction(account_id, tsc: dict, oncredit=False):
     Transaction = Base.classes.accounts_transactions
     transaction = Transaction(
@@ -39,6 +38,7 @@ def save_transaction(account_id, tsc: dict, oncredit=False):
 
 def save_transactions_to_db(processor: TransactionsProcessor):
     """Bonus point 1"""
+    Base.prepare(db.engine, reflect=True)
     Account = Base.classes.accounts_account
     account_id: str = processor.file_name.removesuffix(".csv")
     account = db.session.query(Account).filter_by(extra_id=account_id).first()
