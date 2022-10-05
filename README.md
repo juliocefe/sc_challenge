@@ -40,7 +40,7 @@ Después de dar guardar el formulario, nos vamos a comprobar que las transaccion
 ![alt text](https://github.com/juliocefe/sc_challenge/blob/main/transactions.png?raw=true)
 
 
-To conclude go to [mailhog][(http://127.0.0.1:8025/)), and we are going to see our email there.
+To conclude go to [mailhog](http://127.0.0.1:8025), and we are going to see our email there.
 
 Thanks for follow the steps, sorry for the ugly images edition :s
 
