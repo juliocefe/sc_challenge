@@ -35,7 +35,7 @@ Register an account name and upload file transactions.csv in the accounts formul
 
 ![alt text](https://github.com/juliocefe/sc_challenge/blob/main/accounts.png?raw=true)
 
-Después de dar guardar el formulario, nos vamos a comprobar que las transacciones si se hayan creado
+After submit the formulary, got to check if transactions were created.
 
 ![alt text](https://github.com/juliocefe/sc_challenge/blob/main/transactions.png?raw=true)
 
