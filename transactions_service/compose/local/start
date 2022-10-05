@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# TODO  learn what this are for or remove them
+set -o errexit
+set -o pipefail
+set -o nounset
+
+flask run -h 0.0.0.0 -p 5000 --reload

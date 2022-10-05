@@ -1,0 +1,8 @@
+MAIL_SERVER=mailhog
+MAIL_PORT=1025
+MAIL_USE_SSL=False
+MAIL_USERNAME=mailhog
+MAIL_PASSWORD=mailhog
+MAIL_DEFAULT_SENDER=test@mailhog.local
+RECIPIENTS=customer@mailserver.domain
+SQLALCHEMY_DATABASE_URI=postgresql+psycopg2://AWDxbak9YmU3h4siTyKzu9km9xHtj:t*nktvWuz4hiaXyfuB-CBji7n3.eaCtmC6dzMYxKihB@postgres:5432/stori

@@ -6,8 +6,6 @@ ENV PYTHONDONTWRITEBYTECODE 1
 RUN apt-get update \
   # dependencies for building Python packages
   && apt-get install -y build-essential \
-  # psycopg2 dependencies
-  && apt-get install -y libpq-dev \
   # Translations dependencies
   && apt-get install -y gettext \
   # cleaning up unused files
@@ -22,11 +20,5 @@ RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 COPY . .
-COPY ./compose/flask/start /start
-RUN sed -i 's/\r$//g' /start
-RUN chmod +x /start
 
-ENV FLASK_APP run
-ENV FLASK_DEBUG 1
-
-CMD [ "/start" ]
+CMD [ "python3", "observer_app/observe_files.py" ]

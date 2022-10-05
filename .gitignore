@@ -273,3 +273,13 @@ sahuarito/media/
 
 # backups
 backups/
+
+# Django stuff:
+staticfiles/
+*/static/CACHE/
+
+# stori
+stori/stori/media/
+
+# zip files
+*.zip
