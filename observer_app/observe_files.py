@@ -4,7 +4,6 @@ from processor import process_file_service
 
 
 def on_create(event):
-    print("a file was created 0.0!")
     print("calling flask service...")
     process_file_service(event.src_path)
 

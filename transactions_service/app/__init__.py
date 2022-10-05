@@ -25,9 +25,6 @@ Base = automap_base()
 Base.prepare(db.engine, reflect=True)
 
     
-    
-
-
 def save_transaction(account_id, tsc: dict, oncredit=False):
     Transaction = Base.classes.accounts_transactions
     transaction = Transaction(
