@@ -33,7 +33,7 @@ In password type: Stori12345
 
 Register an account name and upload file transactions.csv in the accounts formulary
 
-![alt text](https://github.com/juliocefe/sc_challenge/blob/main/accouns?raw=true)
+![alt text](https://github.com/juliocefe/sc_challenge/blob/main/accounts.png?raw=true)
 
 
 
