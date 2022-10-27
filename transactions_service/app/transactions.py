@@ -74,13 +74,13 @@ class TransactionsProcessor:
             data = csv.DictReader(f)
             for row in data:
                 month, year = row["date"].split("/")[1:]
-                mont_id = f"{month}-{year}"
-                if mont_id not in self.month_stats:
-                    self.month_stats[mont_id] = MonthStats(
+                month_id = f"{month}-{year}"
+                if month_id not in self.month_stats:
+                    self.month_stats[month_id] = MonthStats(
                         name=MONTHS[int(month)],
                         month_number=int(month)
                     )
-                month_stats: MonthStats = self.month_stats[mont_id]
+                month_stats: MonthStats = self.month_stats[month_id]
                 self.process_transaction(row, month_stats)
 
     @property
