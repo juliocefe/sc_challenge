@@ -40,18 +40,19 @@ class MonthStats:
     def transactions_count(self):
         return len(self.debit_transactions + self.credit_transactions)
 
-
+@dataclass
 class TransactionsProcessor:
 
     CREDIT_CARD = "+"
     DEBIT_CARD = "-"
+    
+    file_name: str
+    total_balance: Decimal = Decimal("0.00")
+    debit_total_balance: Decimal = Decimal("0.00")
+    credit_total_balance: Decimal = Decimal("0.00")
+    month_stats: dict[str, MonthStats] = field(default_factory=dict)
 
-    def __init__(self, file_name):
-        self.file_name = file_name
-        self.total_balance = Decimal("0.00")
-        self.debit_total_balance = Decimal("0.00")
-        self.credit_total_balance = Decimal("0.00")
-        self.month_stats = {}
+    def __post_init__(self):
         self.process_data()
 
     def process_transaction(self, raw_data: dict, month: MonthStats):
